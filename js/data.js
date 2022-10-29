@@ -61,8 +61,6 @@ const LNG_END = 139.80000;
 const MIN_PRICE = 0;
 const MAX_PRICE = 100000;
 
-const DEFAULT_OFFERS_COUNT = 10;
-
 // Описание автора
 function getAvatarPath(id) {
   return `img/avatars/user${id.toString().padStart(2, '0')}.png`;
@@ -98,7 +96,7 @@ function makeOffer(id) {
 }
 
 // Создание объявления
-function createOffers(count) {
+export function createOffers(count) {
   const offers = [];
 
   for (let i = 1; i <= count; i++) {
@@ -107,7 +105,3 @@ function createOffers(count) {
 
   return offers;
 }
-
-createOffers(DEFAULT_OFFERS_COUNT);
-
-export {createOffers, DEFAULT_OFFERS_COUNT};

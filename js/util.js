@@ -1,5 +1,5 @@
 // Получение случайного целого числа из переданного диапазона включительно
-function getRandomPositiveInteger (a, b) {
+export function getRandomPositiveInteger (a, b) {
   if (a < 0 || b < 0) {
     return NaN;
   }
@@ -10,7 +10,7 @@ function getRandomPositiveInteger (a, b) {
 }
 
 // Получение случайного числа с плавающей точкой из переданного диапазона включительно
-function getRandomPositiveFloat (a, b, digits = 1) {
+export function getRandomPositiveFloat (a, b, digits = 1) {
   if (a < 0 || b < 0 || digits < 0) {
     return NaN;
   }
@@ -20,8 +20,6 @@ function getRandomPositiveFloat (a, b, digits = 1) {
   return +result.toFixed(digits);
 }
 
-function getRandomArrayElement (elements) {
+export function getRandomArrayElement (elements) {
   return elements[getRandomPositiveInteger(0, elements.length - 1)];
 }
-
-export {getRandomPositiveInteger, getRandomPositiveFloat, getRandomArrayElement};
