@@ -19,8 +19,12 @@ export function renderCard({offer, author}) {
   cardElement.querySelector('.popup__type').textContent = offerTypeToTitle[offer.type];
   cardElement.querySelector('.popup__text--capacity').textContent = `${offer.rooms} комнаты для ${offer.guests} гостей`;
   cardElement.querySelector('.popup__text--time').textContent = `Заезд после ${offer.checkin}, выезд до ${offer.checkout}`;
-  cardElement.querySelector('.popup__description').textContent = offer.description;
   cardElement.querySelector('.popup__avatar').src = author.avatar;
+
+  if (offer.description && offer.description.length) {
+    const popupDescriptionElement = cardElement.querySelector('.popup__description');
+    popupDescriptionElement.textContent = offer.description;
+  }
 
   const popupFeaturesElement = cardElement.querySelector('.popup__features');
   popupFeaturesElement.innerHTML = '';
