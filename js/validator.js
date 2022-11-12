@@ -26,6 +26,8 @@ const roomNumberElement = adFormElement.querySelector('#room_number');
 const capacityElement = adFormElement.querySelector('#capacity');
 const typeElement = adFormElement.querySelector('#type');
 const priceElement = adFormElement.querySelector('#price');
+const checkinElement = adFormElement.querySelector('#timein');
+const checkoutElement = adFormElement.querySelector('#timeout');
 const submitButton = adFormElement.querySelector('.ad-form__submit');
 
 const pristine = new Pristine(adFormElement, {
@@ -95,10 +97,21 @@ function getPriceErrorMessage() {
   return `Минимальная стоимость для выбранного типа жилья ${typesToPrices[typeElement.value]} руб.`;
 }
 
+//синхронизированные поля
+function getСheckinChange() {
+  checkinElement.value = checkoutElement.value;
+}
+
+function getСheckoutChange() {
+  checkoutElement.value = checkinElement.value;
+}
+
 roomNumberElement.addEventListener('change', onRoomNumberChange);
 capacityElement.addEventListener('change', onCapacityChange);
 typeElement.addEventListener('change', onTypeChange);
 priceElement.addEventListener('change', onPriceChange);
+checkinElement.addEventListener('change', getСheckoutChange);
+checkoutElement.addEventListener('change', getСheckinChange);
 
 adFormElement.addEventListener('submit', (evt) => {
   evt.preventDefault();
