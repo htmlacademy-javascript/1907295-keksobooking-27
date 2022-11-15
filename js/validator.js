@@ -12,7 +12,7 @@ const guestsToRooms = {
   3: ['3']
 };
 
-const typesToPrices = {
+export const typesToPrices = {
   bungalow: 0,
   flat: 1000,
   hotel: 3000,
@@ -98,11 +98,11 @@ function getPriceErrorMessage() {
 }
 
 //синхронизированные поля
-function getСheckinChange() {
+function onСheckinChange() {
   checkinElement.value = checkoutElement.value;
 }
 
-function getСheckoutChange() {
+function onСheckoutChange() {
   checkoutElement.value = checkinElement.value;
 }
 
@@ -110,8 +110,8 @@ roomNumberElement.addEventListener('change', onRoomNumberChange);
 capacityElement.addEventListener('change', onCapacityChange);
 typeElement.addEventListener('change', onTypeChange);
 priceElement.addEventListener('change', onPriceChange);
-checkinElement.addEventListener('change', getСheckoutChange);
-checkoutElement.addEventListener('change', getСheckinChange);
+checkinElement.addEventListener('change', onСheckoutChange);
+checkoutElement.addEventListener('change', onСheckinChange);
 
 adFormElement.addEventListener('submit', (evt) => {
   evt.preventDefault();
