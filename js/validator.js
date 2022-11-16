@@ -30,7 +30,7 @@ const checkinElement = adFormElement.querySelector('#timein');
 const checkoutElement = adFormElement.querySelector('#timeout');
 const submitButton = adFormElement.querySelector('.ad-form__submit');
 
-const pristine = new Pristine(adFormElement, {
+export const pristine = new Pristine(adFormElement, {
   classTo: 'ad-form__element',
   errorClass: 'ad-form__element--invalid',
   errorTextParent: 'ad-form__element',
