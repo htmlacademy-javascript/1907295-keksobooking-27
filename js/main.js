@@ -1,13 +1,21 @@
-import {createOffers} from './data.js';
-import {renderCard} from './card.js';
-import {getRandomArrayElement} from './util.js';
-import './form.js';
-import './validator.js';
+import {
+  START_COORDINATES,
+  DEFAULT_OFFERS_COUNT
+} from './const.js';
 
-const DEFAULT_OFFERS_COUNT = 10;
+import {
+  initMap,
+  createMarker
+} from './map.js';
+
+import {createOffers} from './data.js';
+
+import './slider.js';
+
+const mapElement = document.querySelector('.map__canvas');
+const addressElement = document.querySelector('#address');
 
 const offers = createOffers(DEFAULT_OFFERS_COUNT);
-const cardElement = renderCard(getRandomArrayElement(offers));
-const mapElement = document.querySelector('.map__canvas');
+const leafletMap = initMap(mapElement, addressElement, START_COORDINATES);
 
-mapElement.appendChild(cardElement);
+createMarker(offers, leafletMap);

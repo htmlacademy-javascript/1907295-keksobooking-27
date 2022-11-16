@@ -1,3 +1,6 @@
+import {TRUNCATE_COORDINATE} from './const.js';
+
+// Активация формы
 function turnFormOff(forms, active) {
   forms.forEach(({element, classDisabled}) => {
 
@@ -25,4 +28,10 @@ export function setActiveAdForm(active) {
       classDisabled: 'map__filters--disabled',
     },
   ], active);
+}
+
+// Получение координат
+export function getAddress(addressElement, {lat, lng}) {
+  addressElement.value = `${lat.toFixed(TRUNCATE_COORDINATE)}, ${lng.toFixed(TRUNCATE_COORDINATE)}`;
+  addressElement.disabled = true;
 }
