@@ -1,10 +1,12 @@
-import {TRUNCATE_COORDINATE} from './const.js';
-import {pristine} from './validator.js';
-import {postOffer} from './api.js';
-import {showSuccess,showError} from './message.js';
+import { TRUNCATE_COORDINATE } from './const.js';
+import { pristine } from './validator.js';
+import { postOffer } from './api.js';
+import { showSuccess, showError } from './message.js';
 
 const adFormElement = document.querySelector('.ad-form');
+const addressElement = document.querySelector('#address');
 const submitButton = adFormElement.querySelector('.ad-form__submit');
+// const resetButton = adFormElement.querySelector('.ad-form__reset');
 
 // Активация формы
 function turnFormOff(forms, active) {
@@ -37,7 +39,7 @@ export function setActiveAdForm(active) {
 }
 
 // Получение координат
-export function getAddress(addressElement, {lat, lng}) {
+export function setAddressValue({lat, lng}) {
   addressElement.value = `${lat.toFixed(TRUNCATE_COORDINATE)}, ${lng.toFixed(TRUNCATE_COORDINATE)}`;
   // addressElement.disabled = true;
 }

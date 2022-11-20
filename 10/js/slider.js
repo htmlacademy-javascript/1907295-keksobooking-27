@@ -1,4 +1,4 @@
-import {typesToPrices} from './validator.js';
+import { typesToPrices } from './validator.js';
 
 import {
   MIN_PRICE,
