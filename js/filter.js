@@ -8,6 +8,8 @@ const roomsFilterElement = filterElement.querySelector('#housing-rooms');
 const guestsFilterElement = filterElement.querySelector('#housing-guests');
 const featuresFilterElement = filterElement.querySelectorAll('.map__checkbox');
 
+const DEFAULT_VALUE = 'any';
+
 const PriceType = {
   ANY: 'any',
   LOW: 'low',
@@ -21,7 +23,7 @@ const PriceValue = {
 };
 
 function filterByType ({offer}, selectedType) {
-  return selectedType === 'any' || offer.type === selectedType;
+  return selectedType === DEFAULT_VALUE || offer.type === selectedType;
 }
 
 function filterByPrice ({offer}, selectedPrice) {
@@ -40,11 +42,11 @@ function filterByPrice ({offer}, selectedPrice) {
 }
 
 function filterByRooms({offer}, selectedRoom) {
-  return selectedRoom === 'any' || offer.rooms === parseInt(selectedRoom, 10);
+  return selectedRoom === DEFAULT_VALUE || offer.rooms === parseInt(selectedRoom, 10);
 }
 
 function filterByGuests({offer}, selectedGuests) {
-  return selectedGuests === 'any' || offer.guests === parseInt(selectedGuests, 10);
+  return selectedGuests === DEFAULT_VALUE || offer.guests === parseInt(selectedGuests, 10);
 }
 
 function filterByFeatures({offer}, selectedFeatures) {

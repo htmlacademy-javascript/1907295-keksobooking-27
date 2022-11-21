@@ -10,23 +10,15 @@ import { resetPreview } from './preview.js';
 import { resetFilter } from './filter.js';
 import { resetSlider } from './slider.js';
 
+const SubmitButtonState = {
+  SAVING: 'Сохраняю…',
+  DEFAULT: 'Опубликовать',
+};
+
 const adFormElement = document.querySelector('.ad-form');
 const addressElement = document.querySelector('#address');
 const submitButton = adFormElement.querySelector('.ad-form__submit');
 const resetButton = adFormElement.querySelector('.ad-form__reset');
-
-// Очистить форму
-function resetForm () {
-  adFormElement.reset();
-  resetPreview();
-  resetFilter();
-  resetSlider();
-}
-
-resetButton.addEventListener('click', (evt) => {
-  evt.preventDefault();
-  resetForm();
-});
 
 // Активация формы
 function turnFormOff(forms, active) {
@@ -65,15 +57,23 @@ export function setAddressValue({lat, lng}) {
 }
 
 // Отправка данных на сервер
-function blockSubmitButton () {
-  submitButton.disabled = true;
-  submitButton.textContent = 'Сохраняю...';
+function setDisabledSubmitButton(value) {
+  submitButton.disabled = value;
+  submitButton.text = value ? SubmitButtonState.SAVING : SubmitButtonState.DEFAULT;
 }
 
-function unblockSubmitButton () {
-  submitButton.disabled = false;
-  submitButton.textContent = 'Опубликовать';
+// Очистить форму
+function resetForm () {
+  adFormElement.reset();
+  resetPreview();
+  resetFilter();
+  resetSlider();
 }
+
+resetButton.addEventListener('click', (evt) => {
+  evt.preventDefault();
+  resetForm();
+});
 
 adFormElement.addEventListener('submit', async (evt) => {
   evt.preventDefault();
@@ -85,7 +85,7 @@ adFormElement.addEventListener('submit', async (evt) => {
   }
 
   const formData = new FormData(evt.target);
-  blockSubmitButton();
+  setDisabledSubmitButton();
 
   try {
     await postOffer(formData);
@@ -94,5 +94,6 @@ adFormElement.addEventListener('submit', async (evt) => {
     showError(error.message);
   }
 
-  unblockSubmitButton();
+  resetForm();
+  setDisabledSubmitButton();
 });

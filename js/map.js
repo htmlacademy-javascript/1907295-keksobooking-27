@@ -81,7 +81,7 @@ export function initMap(mapElement, coordinates, onLoadMap, onPinMoveEnd) {
 
   const mainPinMarker = createMarker(coordinates, IconType.MAIN, true);
   mainPinMarker.addTo(mainMarkerGroup);
-  mainMarkerGroup.on('moveend', onPinMoveEnd);
+  mainPinMarker.on('moveend', onPinMoveEnd);
 
   return {
     map,
