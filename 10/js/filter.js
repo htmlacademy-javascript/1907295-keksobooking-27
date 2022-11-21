@@ -2,11 +2,11 @@ import { DEFAULT_OFFERS_COUNT } from './const.js';
 import { debounce } from './util.js';
 
 const filterElement = document.querySelector('.map__filters');
-const typeFilter = filterElement.querySelector('#housing-type');
-const priceFilter = filterElement.querySelector('#housing-price');
-const roomsFilter = filterElement.querySelector('#housing-rooms');
-const guestsFilter = filterElement.querySelector('#housing-guests');
-const featuresFilter = filterElement.querySelectorAll('.map__checkbox');
+const typeFilterElement = filterElement.querySelector('#housing-type');
+const priceFilterElement = filterElement.querySelector('#housing-price');
+const roomsFilterElement = filterElement.querySelector('#housing-rooms');
+const guestsFilterElement = filterElement.querySelector('#housing-guests');
+const featuresFilterElement = filterElement.querySelectorAll('.map__checkbox');
 
 const PriceType = {
   ANY: 'any',
@@ -62,14 +62,14 @@ function filterByFeatures({offer}, selectedFeatures) {
 }
 
 function setFilters(offers) {
-  const selectedType = typeFilter.value;
-  const selectedPrice = priceFilter.value;
-  const selectedRoom = roomsFilter.value;
-  const selectedGuests = guestsFilter.value;
+  const selectedType = typeFilterElement.value;
+  const selectedPrice = priceFilterElement.value;
+  const selectedRoom = roomsFilterElement.value;
+  const selectedGuests = guestsFilterElement.value;
   const reducedOffers = [];
 
   const selectedFeatures = Array
-    .from(featuresFilter)
+    .from(featuresFilterElement)
     .filter((featureItem) => featureItem.checked === true)
     .map((featureItem) => featureItem.value);
 
@@ -95,4 +95,8 @@ function setFilters(offers) {
 export function initFilters(initialOffers, cb) {
   cb(setFilters(initialOffers));
   filterElement.addEventListener('change', debounce(() => cb(setFilters(initialOffers))));
+}
+
+export function resetFilter() {
+  filterElement.reset();
 }

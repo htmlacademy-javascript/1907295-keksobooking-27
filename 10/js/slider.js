@@ -42,3 +42,7 @@ typeElement.addEventListener('change', () => {
     start: typesToPrices[typeElement.value],
   });
 });
+
+export function resetSlider () {
+  priceElement.value = typesToPrices[typeElement.value];
+}

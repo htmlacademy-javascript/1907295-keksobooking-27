@@ -1,12 +1,32 @@
+import {
+  showSuccess,
+  showError
+} from './message.js';
+
 import { TRUNCATE_COORDINATE } from './const.js';
 import { pristine } from './validator.js';
 import { postOffer } from './api.js';
-import { showSuccess, showError } from './message.js';
+import { resetPreview } from './preview.js';
+import { resetFilter } from './filter.js';
+import { resetSlider } from './slider.js';
 
 const adFormElement = document.querySelector('.ad-form');
 const addressElement = document.querySelector('#address');
 const submitButton = adFormElement.querySelector('.ad-form__submit');
-// const resetButton = adFormElement.querySelector('.ad-form__reset');
+const resetButton = adFormElement.querySelector('.ad-form__reset');
+
+// Очистить форму
+function resetForm () {
+  adFormElement.reset();
+  resetPreview();
+  resetFilter();
+  resetSlider();
+}
+
+resetButton.addEventListener('click', (evt) => {
+  evt.preventDefault();
+  resetForm();
+});
 
 // Активация формы
 function turnFormOff(forms, active) {

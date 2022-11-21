@@ -88,4 +88,3 @@ export function initMap(mapElement, coordinates, onLoadMap, onPinMoveEnd) {
     mainPinMarker,
   };
 }
-
