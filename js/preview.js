@@ -33,5 +33,5 @@ export function resetPreview () {
   avatarChooseElement.value = '';
   photoChooseElement.value = '';
   avatarPreviewElement.src = DEFAULT_AVATAR;
-  photoChooseElement.src = '';
+  photoPreviewElement.innerHTML = '';
 }

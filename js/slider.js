@@ -44,5 +44,5 @@ typeElement.addEventListener('change', () => {
 });
 
 export function resetSlider () {
-  priceElement.value = typesToPrices[typeElement.value];
+  sliderElement.noUiSlider.reset();
 }

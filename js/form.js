@@ -53,7 +53,6 @@ export function setActiveAdForm(active) {
 // Получение координат
 export function setAddressValue({lat, lng}) {
   addressElement.value = `${lat.toFixed(TRUNCATE_COORDINATE)}, ${lng.toFixed(TRUNCATE_COORDINATE)}`;
-  // addressElement.disabled = true;
 }
 
 // Отправка данных на сервер
@@ -62,7 +61,7 @@ function setDisabledSubmitButton(value) {
   submitButton.text = value ? SubmitButtonState.SAVING : SubmitButtonState.DEFAULT;
 }
 
-// Очистить форму
+// reset-форма
 function resetForm () {
   adFormElement.reset();
   resetPreview();
@@ -70,30 +69,33 @@ function resetForm () {
   resetSlider();
 }
 
-resetButton.addEventListener('click', (evt) => {
-  evt.preventDefault();
-  resetForm();
-});
+export function initForm(clearMap) {
+  resetButton.addEventListener('click', (evt) => {
+    evt.preventDefault();
+    resetForm();
+    clearMap();
+  });
 
-adFormElement.addEventListener('submit', async (evt) => {
-  evt.preventDefault();
+  adFormElement.addEventListener('submit', async (evt) => {
+    evt.preventDefault();
 
-  const isValid = pristine.validate();
+    const isValid = pristine.validate();
 
-  if (!isValid) {
-    return;
-  }
+    if (!isValid) {
+      return;
+    }
 
-  const formData = new FormData(evt.target);
-  setDisabledSubmitButton();
+    const formData = new FormData(evt.target);
+    setDisabledSubmitButton();
 
-  try {
-    await postOffer(formData);
-    showSuccess();
-  } catch (error) {
-    showError(error.message);
-  }
+    try {
+      await postOffer(formData);
+      showSuccess();
+    } catch (error) {
+      showError(error.message);
+    }
 
-  resetForm();
-  setDisabledSubmitButton();
-});
+    resetForm();
+    setDisabledSubmitButton();
+  });
+}
