@@ -1,4 +1,4 @@
-import {typesToPrices} from './validator.js';
+import { typesToPrices } from './validator.js';
 
 import {
   MIN_PRICE,
@@ -42,3 +42,7 @@ typeElement.addEventListener('change', () => {
     start: typesToPrices[typeElement.value],
   });
 });
+
+export function resetSlider () {
+  priceElement.value = typesToPrices[typeElement.value];
+}

@@ -28,9 +28,8 @@ const typeElement = adFormElement.querySelector('#type');
 const priceElement = adFormElement.querySelector('#price');
 const checkinElement = adFormElement.querySelector('#timein');
 const checkoutElement = adFormElement.querySelector('#timeout');
-const submitButton = adFormElement.querySelector('.ad-form__submit');
 
-const pristine = new Pristine(adFormElement, {
+export const pristine = new Pristine(adFormElement, {
   classTo: 'ad-form__element',
   errorClass: 'ad-form__element--invalid',
   errorTextParent: 'ad-form__element',
@@ -76,7 +75,7 @@ function onPriceChange() {
   pristine.validate(priceElement);
 }
 
-//функции, которые возвращает нам информацию об ошибке
+//функции, которые возвращают нам информацию об ошибке
 function validateCapacity() {
   return roomsToGuests[roomNumberElement.value].includes(capacityElement.value);
 }
@@ -112,9 +111,3 @@ typeElement.addEventListener('change', onTypeChange);
 priceElement.addEventListener('change', onPriceChange);
 checkinElement.addEventListener('change', onСheckoutChange);
 checkoutElement.addEventListener('change', onСheckinChange);
-
-adFormElement.addEventListener('submit', (evt) => {
-  evt.preventDefault();
-  const isValid = pristine.validate();
-  submitButton.disabled = !isValid;
-});
