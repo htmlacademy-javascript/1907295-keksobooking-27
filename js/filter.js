@@ -1,12 +1,7 @@
 import { DEFAULT_OFFERS_COUNT } from './const.js';
 import { debounce } from './util.js';
 
-const filterElement = document.querySelector('.map__filters');
-const typeFilterElement = filterElement.querySelector('#housing-type');
-const priceFilterElement = filterElement.querySelector('#housing-price');
-const roomsFilterElement = filterElement.querySelector('#housing-rooms');
-const guestsFilterElement = filterElement.querySelector('#housing-guests');
-const featuresFilterElement = filterElement.querySelectorAll('.map__checkbox');
+const DEFAULT_VALUE = 'any';
 
 const PriceType = {
   ANY: 'any',
@@ -20,11 +15,16 @@ const PriceValue = {
   HIGH: 50000
 };
 
-function filterByType ({offer}, selectedType) {
-  return selectedType === 'any' || offer.type === selectedType;
-}
+const filterElement = document.querySelector('.map__filters');
+const typeFilterElement = filterElement.querySelector('#housing-type');
+const priceFilterElement = filterElement.querySelector('#housing-price');
+const roomsFilterElement = filterElement.querySelector('#housing-rooms');
+const guestsFilterElement = filterElement.querySelector('#housing-guests');
+const featuresFilterElement = filterElement.querySelectorAll('.map__checkbox');
 
-function filterByPrice ({offer}, selectedPrice) {
+const filterByType = ({ offer }, selectedType) => selectedType === DEFAULT_VALUE || offer.type === selectedType;
+
+const filterByPrice = ({offer}, selectedPrice) => {
   switch (selectedPrice) {
     case PriceType.ANY:
       return true;
@@ -37,17 +37,13 @@ function filterByPrice ({offer}, selectedPrice) {
     default:
       throw new Error('Unknown selected price value');
   }
-}
+};
 
-function filterByRooms({offer}, selectedRoom) {
-  return selectedRoom === 'any' || offer.rooms === parseInt(selectedRoom, 10);
-}
+const filterByRooms = ({offer}, selectedRoom) => selectedRoom === DEFAULT_VALUE || offer.rooms === parseInt(selectedRoom, 10);
 
-function filterByGuests({offer}, selectedGuests) {
-  return selectedGuests === 'any' || offer.guests === parseInt(selectedGuests, 10);
-}
+const filterByGuests = ({offer}, selectedGuests) => selectedGuests === DEFAULT_VALUE || offer.guests === parseInt(selectedGuests, 10);
 
-function filterByFeatures({offer}, selectedFeatures) {
+const filterByFeatures = ({offer}, selectedFeatures) => {
   if (selectedFeatures.length === 0) {
     return true;
   }
@@ -59,9 +55,9 @@ function filterByFeatures({offer}, selectedFeatures) {
   return selectedFeatures.every(
     (featureItem) => offer.features.includes(featureItem)
   );
-}
+};
 
-function setFilters(offers) {
+const setFilters = (offers) => {
   const selectedType = typeFilterElement.value;
   const selectedPrice = priceFilterElement.value;
   const selectedRoom = roomsFilterElement.value;
@@ -90,13 +86,13 @@ function setFilters(offers) {
   }
 
   return reducedOffers;
-}
+};
 
-export function initFilters(initialOffers, cb) {
+export const initFilters = (initialOffers, cb) => {
   cb(setFilters(initialOffers));
   filterElement.addEventListener('change', debounce(() => cb(setFilters(initialOffers))));
-}
+};
 
-export function resetFilter() {
+export const resetFilter = () => {
   filterElement.reset();
-}
+};

@@ -21,6 +21,8 @@ export const typesToPrices = {
   max: 100000,
 };
 
+let pristine = null;
+
 const adFormElement = document.querySelector('.ad-form');
 const roomNumberElement = adFormElement.querySelector('#room_number');
 const capacityElement = adFormElement.querySelector('#capacity');
@@ -29,85 +31,85 @@ const priceElement = adFormElement.querySelector('#price');
 const checkinElement = adFormElement.querySelector('#timein');
 const checkoutElement = adFormElement.querySelector('#timeout');
 
-export const pristine = new Pristine(adFormElement, {
-  classTo: 'ad-form__element',
-  errorClass: 'ad-form__element--invalid',
-  errorTextParent: 'ad-form__element',
-}, true);
+const getCapacityErrorMessage = () =>
+  `Количество комнат вмещает ${roomsToGuests[roomNumberElement.value]
+    .join(' или ')} гостей.`;
 
-//проверяем на валидность (где,как,результат)
-pristine.addValidator(
-  capacityElement,
-  validateCapacity,
-  getCapacityErrorMessage,
-);
+const getRoomNumberErrorMessage = () =>
+  `Для выбранного количества гостей требуется ${guestsToRooms[capacityElement.value]
+    .join(' или ')} комнаты`;
 
-pristine.addValidator(
-  roomNumberElement,
-  validateCapacity,
-  getRoomNumberErrorMessage,
-);
+const validateCapacity = () =>
+  roomsToGuests[roomNumberElement.value]
+    .includes(capacityElement.value);
 
-pristine.addValidator(
-  priceElement,
-  validatePrice,
-  getPriceErrorMessage,
-);
+const validatePrice = (value) =>
+  value >= typesToPrices[typeElement.value] && value <= typesToPrices.max;
 
-function onRoomNumberChange() {
+const getPriceErrorMessage = () =>
+  `Минимальная стоимость для выбранного типа жилья ${typesToPrices[typeElement.value]} руб.`;
+
+
+const onRoomNumberChange = () => {
   pristine.validate(capacityElement);
   pristine.validate(roomNumberElement);
-}
+};
 
-function onCapacityChange() {
+const onCapacityChange = () => {
   pristine.validate(capacityElement);
   pristine.validate(roomNumberElement);
-}
+};
 
-function onTypeChange() {
+const onTypeChange = () => {
   const minPrice = typesToPrices[typeElement.value];
   priceElement.placeholder = minPrice;
   priceElement.min = minPrice;
   pristine.validate(priceElement);
-}
+};
 
-function onPriceChange() {
+const onPriceChange = () => {
   pristine.validate(priceElement);
-}
+};
 
-//функции, которые возвращают нам информацию об ошибке
-function validateCapacity() {
-  return roomsToGuests[roomNumberElement.value].includes(capacityElement.value);
-}
-
-function getCapacityErrorMessage() {
-  return `Количество комнат вмещает ${roomsToGuests[roomNumberElement.value].join(' или ')} гостей.`;
-}
-
-function getRoomNumberErrorMessage() {
-  return `Для выбранного количества гостей требуется ${guestsToRooms[capacityElement.value].join(' или ')} комнаты`;
-}
-
-function validatePrice(value) {
-  return value >= typesToPrices[typeElement.value] && value <= typesToPrices.max;
-}
-
-function getPriceErrorMessage() {
-  return `Минимальная стоимость для выбранного типа жилья ${typesToPrices[typeElement.value]} руб.`;
-}
-
-//синхронизированные поля
-function onСheckinChange() {
+const onСheckinChange = () => {
   checkinElement.value = checkoutElement.value;
-}
+};
 
-function onСheckoutChange() {
+const onСheckoutChange = () => {
   checkoutElement.value = checkinElement.value;
-}
+};
 
-roomNumberElement.addEventListener('change', onRoomNumberChange);
-capacityElement.addEventListener('change', onCapacityChange);
-typeElement.addEventListener('change', onTypeChange);
-priceElement.addEventListener('change', onPriceChange);
-checkinElement.addEventListener('change', onСheckoutChange);
-checkoutElement.addEventListener('change', onСheckinChange);
+export const initOfferFormValidator = () => {
+  roomNumberElement.addEventListener('change', onRoomNumberChange);
+  capacityElement.addEventListener('change', onCapacityChange);
+  typeElement.addEventListener('change', onTypeChange);
+  priceElement.addEventListener('change', onPriceChange);
+  checkinElement.addEventListener('change', onСheckoutChange);
+  checkoutElement.addEventListener('change', onСheckinChange);
+
+  pristine = new Pristine(adFormElement, {
+    classTo: 'ad-form__element',
+    errorClass: 'ad-form__element--invalid',
+    errorTextParent: 'ad-form__element',
+  }, true);
+
+  pristine.addValidator(
+    capacityElement,
+    validateCapacity,
+    getCapacityErrorMessage,
+  );
+
+  pristine.addValidator(
+    roomNumberElement,
+    validateCapacity,
+    getRoomNumberErrorMessage,
+  );
+
+  pristine.addValidator(
+    priceElement,
+    validatePrice,
+    getPriceErrorMessage,
+  );
+};
+
+export const validateForm = () => pristine.validate();

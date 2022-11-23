@@ -43,6 +43,6 @@ typeElement.addEventListener('change', () => {
   });
 });
 
-export function resetSlider () {
-  priceElement.value = typesToPrices[typeElement.value];
-}
+export const resetSlider = () => {
+  sliderElement.noUiSlider.reset();
+};

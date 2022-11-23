@@ -17,7 +17,7 @@ const IconType = {
   DEFAULT: 'default'
 };
 
-function createPinIcon(iconType) {
+const createPinIcon = (iconType) => {
   switch (iconType) {
     case (IconType.DEFAULT):
       return L.icon({
@@ -34,9 +34,9 @@ function createPinIcon(iconType) {
     default:
       throw new Error('Unknown pin icon type');
   }
-}
+};
 
-function createMarker(location, iconType, isDraggable = false) {
+const createMarker = (location, iconType, isDraggable = false) => {
   const {lat, lng} = location;
   return L.marker(
     {lat, lng},
@@ -45,9 +45,9 @@ function createMarker(location, iconType, isDraggable = false) {
       draggable: isDraggable
     },
   );
-}
+};
 
-function removeMarkers(map) {
+const removeMarkers = (map) => {
   map.eachLayer((layer) => {
     const {options} = layer;
     const {icon} = options;
@@ -55,9 +55,9 @@ function removeMarkers(map) {
       layer.remove();
     }
   });
-}
+};
 
-export function renderMarkers(map, offers) {
+export const renderMarkers = (map, offers) => {
   removeMarkers(map);
   offers.forEach((offer) => {
     const cardElement = renderCard(offer);
@@ -65,9 +65,9 @@ export function renderMarkers(map, offers) {
       .addTo(map)
       .bindPopup(cardElement);
   });
-}
+};
 
-export function initMap(mapElement, coordinates, onLoadMap, onPinMoveEnd) {
+export const initMap = (mapElement, coordinates, onLoadMap, onPinMoveEnd) => {
   const map = L.map(mapElement)
     .on('load', onLoadMap)
     .setView(coordinates, ZOOM);
@@ -81,10 +81,10 @@ export function initMap(mapElement, coordinates, onLoadMap, onPinMoveEnd) {
 
   const mainPinMarker = createMarker(coordinates, IconType.MAIN, true);
   mainPinMarker.addTo(mainMarkerGroup);
-  mainMarkerGroup.on('moveend', onPinMoveEnd);
+  mainPinMarker.on('moveend', onPinMoveEnd);
 
   return {
     map,
     mainPinMarker,
   };
-}
+};

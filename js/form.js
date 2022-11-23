@@ -4,32 +4,22 @@ import {
 } from './message.js';
 
 import { TRUNCATE_COORDINATE } from './const.js';
-import { pristine } from './validator.js';
 import { postOffer } from './api.js';
 import { resetPreview } from './preview.js';
 import { resetFilter } from './filter.js';
 import { resetSlider } from './slider.js';
+
+const SubmitButtonState = {
+  SAVING: 'Сохраняю…',
+  DEFAULT: 'Опубликовать',
+};
 
 const adFormElement = document.querySelector('.ad-form');
 const addressElement = document.querySelector('#address');
 const submitButton = adFormElement.querySelector('.ad-form__submit');
 const resetButton = adFormElement.querySelector('.ad-form__reset');
 
-// Очистить форму
-function resetForm () {
-  adFormElement.reset();
-  resetPreview();
-  resetFilter();
-  resetSlider();
-}
-
-resetButton.addEventListener('click', (evt) => {
-  evt.preventDefault();
-  resetForm();
-});
-
-// Активация формы
-function turnFormOff(forms, active) {
+const turnFormOff = (forms, active) => {
   forms.forEach(({element, classDisabled}) => {
 
     if (!active) {
@@ -43,9 +33,21 @@ function turnFormOff(forms, active) {
         item.disabled = !active;
       });
   });
-}
+};
 
-export function setActiveAdForm(active) {
+const setDisabledSubmitButton = (value) => {
+  submitButton.disabled = value;
+  submitButton.text = value ? SubmitButtonState.SAVING : SubmitButtonState.DEFAULT;
+};
+
+const resetForm = () => {
+  adFormElement.reset();
+  resetPreview();
+  resetFilter();
+  resetSlider();
+};
+
+export const setActiveAdForm = (active) => {
   turnFormOff([
     {
       element: document.querySelector('.ad-form'),
@@ -56,43 +58,38 @@ export function setActiveAdForm(active) {
       classDisabled: 'map__filters--disabled',
     },
   ], active);
-}
+};
 
-// Получение координат
-export function setAddressValue({lat, lng}) {
+export const setAddressValue = ({lat, lng}) => {
   addressElement.value = `${lat.toFixed(TRUNCATE_COORDINATE)}, ${lng.toFixed(TRUNCATE_COORDINATE)}`;
-  // addressElement.disabled = true;
-}
+};
 
-// Отправка данных на сервер
-function blockSubmitButton () {
-  submitButton.disabled = true;
-  submitButton.textContent = 'Сохраняю...';
-}
+export const initForm = (clearMapCb, validateFormCb) => {
+  resetButton.addEventListener('click', (evt) => {
+    evt.preventDefault();
+    resetForm();
+    clearMapCb();
+  });
 
-function unblockSubmitButton () {
-  submitButton.disabled = false;
-  submitButton.textContent = 'Опубликовать';
-}
+  adFormElement.addEventListener('submit', async (evt) => {
+    evt.preventDefault();
 
-adFormElement.addEventListener('submit', async (evt) => {
-  evt.preventDefault();
+    if (!validateFormCb()) {
+      return;
+    }
 
-  const isValid = pristine.validate();
+    const formData = new FormData(evt.target);
+    setDisabledSubmitButton();
 
-  if (!isValid) {
-    return;
-  }
+    try {
+      await postOffer(formData);
+      showSuccess();
+    } catch (error) {
+      showError(error.message);
+    }
 
-  const formData = new FormData(evt.target);
-  blockSubmitButton();
-
-  try {
-    await postOffer(formData);
-    showSuccess();
-  } catch (error) {
-    showError(error.message);
-  }
-
-  unblockSubmitButton();
-});
+    resetForm();
+    clearMapCb();
+    setDisabledSubmitButton();
+  });
+};

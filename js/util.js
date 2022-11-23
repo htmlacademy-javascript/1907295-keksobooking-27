@@ -1,8 +1,8 @@
-import { ALERT_SHOW_TIME } from './const.js';
+import { ALERT_SHOW_TIME, TIMEOUT_DELAY } from './const.js';
 
-export function isEscapeKey (evt) {
+export const isEscapeKey = (evt) => {
   evt.key = 'Escape';
-}
+};
 
 export const showAlert = (message) => {
   const alert = document.createElement('div');
@@ -23,12 +23,11 @@ export const showAlert = (message) => {
   }, ALERT_SHOW_TIME);
 };
 
-// Функция debounce для устранения дребезга
-export function debounce (callback, timeoutDelay = 500) {
+export const debounce = (callback) => {
   let timeoutId;
 
   return (...rest) => {
     clearTimeout(timeoutId);
-    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+    timeoutId = setTimeout(() => callback.apply(this, rest), TIMEOUT_DELAY);
   };
-}
+};
