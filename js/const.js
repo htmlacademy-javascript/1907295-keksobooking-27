@@ -16,3 +16,5 @@ export const PRICE_STEP = 1000;
 export const DEFAULT_OFFERS_COUNT = 10;
 
 export const ALERT_SHOW_TIME = 5000;
+
+export const TIMEOUT_DELAY = 500;

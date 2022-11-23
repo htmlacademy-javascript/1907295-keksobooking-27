@@ -21,6 +21,14 @@ const onOverlayClick = () => {
   closeMessage();
 };
 
+function closeMessage () {
+  const messageElement =
+    document.querySelector('.success') || document.querySelector('.error');
+  messageElement.remove();
+  document.removeEventListener('keydown', onEscKeydown);
+  document.removeEventListener('click', onOverlayClick);
+}
+
 // Сообщение об успешной отправке
 export const showSuccess = () => {
   const successElement = successTemplate.cloneNode(true);
@@ -35,12 +43,4 @@ export const showError = () => {
   document.addEventListener('keydown', onEscKeydown);
   errorElement.querySelector('.error__button').addEventListener('click', onOverlayClick);
   mainElement.append(errorElement);
-};
-
-const closeMessage = () => {
-  const messageElement =
-    document.querySelector('.success') || document.querySelector('.error');
-  messageElement.remove();
-  document.removeEventListener('keydown', onEscKeydown);
-  document.removeEventListener('click', onOverlayClick);
 };

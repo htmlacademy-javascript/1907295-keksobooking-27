@@ -1,13 +1,6 @@
 import { DEFAULT_OFFERS_COUNT } from './const.js';
 import { debounce } from './util.js';
 
-const filterElement = document.querySelector('.map__filters');
-const typeFilterElement = filterElement.querySelector('#housing-type');
-const priceFilterElement = filterElement.querySelector('#housing-price');
-const roomsFilterElement = filterElement.querySelector('#housing-rooms');
-const guestsFilterElement = filterElement.querySelector('#housing-guests');
-const featuresFilterElement = filterElement.querySelectorAll('.map__checkbox');
-
 const DEFAULT_VALUE = 'any';
 
 const PriceType = {
@@ -21,6 +14,13 @@ const PriceValue = {
   MIDDLE: 10000,
   HIGH: 50000
 };
+
+const filterElement = document.querySelector('.map__filters');
+const typeFilterElement = filterElement.querySelector('#housing-type');
+const priceFilterElement = filterElement.querySelector('#housing-price');
+const roomsFilterElement = filterElement.querySelector('#housing-rooms');
+const guestsFilterElement = filterElement.querySelector('#housing-guests');
+const featuresFilterElement = filterElement.querySelectorAll('.map__checkbox');
 
 const filterByType = ({ offer }, selectedType) => selectedType === DEFAULT_VALUE || offer.type === selectedType;
 

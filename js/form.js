@@ -4,7 +4,6 @@ import {
 } from './message.js';
 
 import { TRUNCATE_COORDINATE } from './const.js';
-import { initOfferFormValidator } from './validator.js';
 import { postOffer } from './api.js';
 import { resetPreview } from './preview.js';
 import { resetFilter } from './filter.js';
@@ -20,7 +19,6 @@ const addressElement = document.querySelector('#address');
 const submitButton = adFormElement.querySelector('.ad-form__submit');
 const resetButton = adFormElement.querySelector('.ad-form__reset');
 
-// Активация формы
 const turnFormOff = (forms, active) => {
   forms.forEach(({element, classDisabled}) => {
 
@@ -37,6 +35,18 @@ const turnFormOff = (forms, active) => {
   });
 };
 
+const setDisabledSubmitButton = (value) => {
+  submitButton.disabled = value;
+  submitButton.text = value ? SubmitButtonState.SAVING : SubmitButtonState.DEFAULT;
+};
+
+const resetForm = () => {
+  adFormElement.reset();
+  resetPreview();
+  resetFilter();
+  resetSlider();
+};
+
 export const setActiveAdForm = (active) => {
   turnFormOff([
     {
@@ -50,38 +60,21 @@ export const setActiveAdForm = (active) => {
   ], active);
 };
 
-// Получение координат
 export const setAddressValue = ({lat, lng}) => {
   addressElement.value = `${lat.toFixed(TRUNCATE_COORDINATE)}, ${lng.toFixed(TRUNCATE_COORDINATE)}`;
 };
 
-// Отправка данных на сервер
-const setDisabledSubmitButton = (value) => {
-  submitButton.disabled = value;
-  submitButton.text = value ? SubmitButtonState.SAVING : SubmitButtonState.DEFAULT;
-};
-
-// reset-форма
-const resetForm = () => {
-  adFormElement.reset();
-  resetPreview();
-  resetFilter();
-  resetSlider();
-};
-
-export const initForm = (clearMap) => {
+export const initForm = (clearMapCb, validateFormCb) => {
   resetButton.addEventListener('click', (evt) => {
     evt.preventDefault();
     resetForm();
-    clearMap();
+    clearMapCb();
   });
 
   adFormElement.addEventListener('submit', async (evt) => {
     evt.preventDefault();
 
-    const isValid = initOfferFormValidator.validate();
-
-    if (!isValid) {
+    if (!validateFormCb()) {
       return;
     }
 
@@ -96,7 +89,7 @@ export const initForm = (clearMap) => {
     }
 
     resetForm();
-    clearMap();
+    clearMapCb();
     setDisabledSubmitButton();
   });
 };
