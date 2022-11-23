@@ -4,7 +4,7 @@ import {
 } from './message.js';
 
 import { TRUNCATE_COORDINATE } from './const.js';
-import { pristine } from './validator.js';
+import { initOfferFormValidator } from './validator.js';
 import { postOffer } from './api.js';
 import { resetPreview } from './preview.js';
 import { resetFilter } from './filter.js';
@@ -79,7 +79,7 @@ export const initForm = (clearMap) => {
   adFormElement.addEventListener('submit', async (evt) => {
     evt.preventDefault();
 
-    const isValid = pristine.validate();
+    const isValid = initOfferFormValidator.validate();
 
     if (!isValid) {
       return;
