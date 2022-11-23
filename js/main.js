@@ -21,7 +21,7 @@ import './preview.js';
 
 const mapElement = document.querySelector('.map__canvas');
 
-async function bootstrap() {
+const bootstrap = async() => {
   const {map, mainPinMarker} = initMap(
     mapElement,
     START_COORDINATES,
@@ -42,6 +42,6 @@ async function bootstrap() {
   } catch (error) {
     showAlert(error);
   }
-}
+};
 
 bootstrap();

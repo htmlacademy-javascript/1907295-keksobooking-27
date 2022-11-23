@@ -43,6 +43,6 @@ typeElement.addEventListener('change', () => {
   });
 });
 
-export function resetSlider () {
+export const resetSlider = () => {
   sliderElement.noUiSlider.reset();
-}
+};

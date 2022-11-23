@@ -10,37 +10,37 @@ const errorTemplate = document.querySelector('#error')
   .content
   .querySelector('.error');
 
-function onEscKeydown (evt) {
+const onEscKeydown = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
     closeMessage();
   }
-}
+};
 
-function onOverlayClick() {
+const onOverlayClick = () => {
   closeMessage();
-}
+};
 
-function closeMessage () {
+// Сообщение об успешной отправке
+export const showSuccess = () => {
+  const successElement = successTemplate.cloneNode(true);
+  document.addEventListener('keydown', onEscKeydown);
+  document.addEventListener('click', onOverlayClick);
+  mainElement.append(successElement);
+};
+
+// Сообщение об ошибке
+export const showError = () => {
+  const errorElement = errorTemplate.cloneNode(true);
+  document.addEventListener('keydown', onEscKeydown);
+  errorElement.querySelector('.error__button').addEventListener('click', onOverlayClick);
+  mainElement.append(errorElement);
+};
+
+const closeMessage = () => {
   const messageElement =
     document.querySelector('.success') || document.querySelector('.error');
   messageElement.remove();
   document.removeEventListener('keydown', onEscKeydown);
   document.removeEventListener('click', onOverlayClick);
-}
-
-// Сообщение об успешной отправке
-export function showSuccess () {
-  const successElement = successTemplate.cloneNode(true);
-  document.addEventListener('keydown', onEscKeydown);
-  document.addEventListener('click', onOverlayClick);
-  mainElement.append(successElement);
-}
-
-// Сообщение об ошибке
-export function showError () {
-  const errorElement = errorTemplate.cloneNode(true);
-  document.addEventListener('keydown', onEscKeydown);
-  errorElement.querySelector('.error__button').addEventListener('click', onOverlayClick);
-  mainElement.append(errorElement);
-}
+};

@@ -21,7 +21,7 @@ const submitButton = adFormElement.querySelector('.ad-form__submit');
 const resetButton = adFormElement.querySelector('.ad-form__reset');
 
 // Активация формы
-function turnFormOff(forms, active) {
+const turnFormOff = (forms, active) => {
   forms.forEach(({element, classDisabled}) => {
 
     if (!active) {
@@ -35,9 +35,9 @@ function turnFormOff(forms, active) {
         item.disabled = !active;
       });
   });
-}
+};
 
-export function setActiveAdForm(active) {
+export const setActiveAdForm = (active) => {
   turnFormOff([
     {
       element: document.querySelector('.ad-form'),
@@ -48,28 +48,28 @@ export function setActiveAdForm(active) {
       classDisabled: 'map__filters--disabled',
     },
   ], active);
-}
+};
 
 // Получение координат
-export function setAddressValue({lat, lng}) {
+export const setAddressValue = ({lat, lng}) => {
   addressElement.value = `${lat.toFixed(TRUNCATE_COORDINATE)}, ${lng.toFixed(TRUNCATE_COORDINATE)}`;
-}
+};
 
 // Отправка данных на сервер
-function setDisabledSubmitButton(value) {
+const setDisabledSubmitButton = (value) => {
   submitButton.disabled = value;
   submitButton.text = value ? SubmitButtonState.SAVING : SubmitButtonState.DEFAULT;
-}
+};
 
 // reset-форма
-function resetForm () {
+const resetForm = () => {
   adFormElement.reset();
   resetPreview();
   resetFilter();
   resetSlider();
-}
+};
 
-export function initForm(clearMap) {
+export const initForm = (clearMap) => {
   resetButton.addEventListener('click', (evt) => {
     evt.preventDefault();
     resetForm();
@@ -96,6 +96,7 @@ export function initForm(clearMap) {
     }
 
     resetForm();
+    clearMap();
     setDisabledSubmitButton();
   });
-}
+};

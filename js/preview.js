@@ -29,9 +29,9 @@ photoChooseElement.addEventListener('change', () => {
   }
 });
 
-export function resetPreview () {
+export const resetPreview = () => {
   avatarChooseElement.value = '';
   photoChooseElement.value = '';
   avatarPreviewElement.src = DEFAULT_AVATAR;
   photoPreviewElement.innerHTML = '';
-}
+};
