@@ -3,6 +3,7 @@ import {
   showError
 } from './message.js';
 
+import { turnFormOff } from './util.js';
 import { TRUNCATE_COORDINATE } from './const.js';
 import { postOffer } from './api.js';
 import { resetPreview } from './preview.js';
@@ -18,22 +19,6 @@ const adFormElement = document.querySelector('.ad-form');
 const addressElement = document.querySelector('#address');
 const submitButton = adFormElement.querySelector('.ad-form__submit');
 const resetButton = adFormElement.querySelector('.ad-form__reset');
-
-const turnFormOff = (forms, active) => {
-  forms.forEach(({element, classDisabled}) => {
-
-    if (!active) {
-      element.classList.add(classDisabled);
-    } else {
-      element.classList.remove(classDisabled);
-    }
-
-    Array.from(element.children)
-      .forEach((item) => {
-        item.disabled = !active;
-      });
-  });
-};
 
 const setDisabledSubmitButton = (value) => {
   submitButton.disabled = value;
@@ -52,11 +37,7 @@ export const setActiveAdForm = (active) => {
     {
       element: document.querySelector('.ad-form'),
       classDisabled: 'ad-form--disabled'
-    },
-    {
-      element: document.querySelector('.map__filters'),
-      classDisabled: 'map__filters--disabled',
-    },
+    }
   ], active);
 };
 
@@ -65,6 +46,8 @@ export const setAddressValue = ({lat, lng}) => {
 };
 
 export const initForm = (clearMapCb, validateFormCb) => {
+  addressElement.readOnly = true;
+
   resetButton.addEventListener('click', (evt) => {
     evt.preventDefault();
     resetForm();
@@ -84,12 +67,12 @@ export const initForm = (clearMapCb, validateFormCb) => {
     try {
       await postOffer(formData);
       showSuccess();
+      clearMapCb();
+      resetForm();
     } catch (error) {
       showError(error.message);
     }
 
-    resetForm();
-    clearMapCb();
     setDisabledSubmitButton();
   });
 };

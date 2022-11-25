@@ -1,8 +1,6 @@
 import { ALERT_SHOW_TIME, TIMEOUT_DELAY } from './const.js';
 
-export const isEscapeKey = (evt) => {
-  evt.key = 'Escape';
-};
+export const isEscapeKey = (evt) => evt.key === 'Escape';
 
 export const showAlert = (message) => {
   const alert = document.createElement('div');
@@ -30,4 +28,20 @@ export const debounce = (callback) => {
     clearTimeout(timeoutId);
     timeoutId = setTimeout(() => callback.apply(this, rest), TIMEOUT_DELAY);
   };
+};
+
+export const turnFormOff = (forms, active) => {
+  forms.forEach(({element, classDisabled}) => {
+
+    if (!active) {
+      element.classList.add(classDisabled);
+    } else {
+      element.classList.remove(classDisabled);
+    }
+
+    Array.from(element.children)
+      .forEach((item) => {
+        item.disabled = !active;
+      });
+  });
 };
