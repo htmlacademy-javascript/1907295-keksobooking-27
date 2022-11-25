@@ -1,5 +1,5 @@
 import { DEFAULT_OFFERS_COUNT } from './const.js';
-import { debounce } from './util.js';
+import { debounce, turnFormOff } from './util.js';
 
 const DEFAULT_VALUE = 'any';
 
@@ -57,7 +57,12 @@ const filterByFeatures = ({offer}, selectedFeatures) => {
   );
 };
 
-const setFilters = (offers) => {
+const setFilters = (offers, isInit = false) => {
+
+  if (isInit) {
+    return offers.slice(0, DEFAULT_OFFERS_COUNT);
+  }
+
   const selectedType = typeFilterElement.value;
   const selectedPrice = priceFilterElement.value;
   const selectedRoom = roomsFilterElement.value;
@@ -91,6 +96,19 @@ const setFilters = (offers) => {
 export const initFilters = (initialOffers, cb) => {
   cb(setFilters(initialOffers));
   filterElement.addEventListener('change', debounce(() => cb(setFilters(initialOffers))));
+
+  filterElement.addEventListener('reset', () => {
+    cb(setFilters(initialOffers, true));
+  });
+};
+
+export const setActiveFilterForm = (active) => {
+  turnFormOff([
+    {
+      element: document.querySelector('.map__filters'),
+      classDisabled: 'map__filters--disabled'
+    },
+  ], active);
 };
 
 export const resetFilter = () => {

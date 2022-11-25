@@ -5,7 +5,7 @@ import './preview.js';
 import { START_COORDINATES } from './const.js';
 import { showAlert } from './util.js';
 import { getOffers } from './api.js';
-import { initFilters } from './filter.js';
+import { initFilters, setActiveFilterForm } from './filter.js';
 
 import { initMap, renderMarkers } from './map.js';
 import { initOfferFormValidator, validateForm } from './validator.js';
@@ -18,6 +18,8 @@ import {
 
 const bootstrap = async() => {
   const mapElement = document.querySelector('.map__canvas');
+  setActiveFilterForm(false);
+  setActiveAdForm(false);
 
   initOfferFormValidator();
 
@@ -38,6 +40,7 @@ const bootstrap = async() => {
       setAddressValue(START_COORDINATES);
     }, validateForm);
 
+    setActiveFilterForm(true);
     initFilters(offers, (reducedOffers) => renderMarkers(map, reducedOffers));
   } catch (error) {
     showAlert(error);
